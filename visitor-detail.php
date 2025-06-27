@@ -118,45 +118,29 @@ while ($row=mysqli_fetch_array($ret)) {
     <th>Address</th>
     <td colspan="3"><?php  echo $row['Address'];?></td>
   </tr>
-<tr>
-    <th colspan="4" style="color:blue">Whom to Meet Details</th>
-</tr>
 
-  <tr>
-    <th>Apartment no</th>
-    <td><?php  echo $row['Apartment'];?></td>
-    <th>Floor</th>
-    <td><?php  echo $row['Floor'];?></td>
-  </tr>
-  <tr>
-    <th>Whom to Meet</th>
-    <td><?php  echo $row['WhomtoMeet'];?></td>
-    <th>Reason to Meet</th>
-    <td><?php  echo $row['ReasontoMeet'];?></td>
-  </tr>
-  <tr>
-    <th>Vistor Enter Time</th>
-    <td colspan="3"><?php  echo $row['EnterDate'];?></td>
-  </tr>
+
+  
+
 
 
 <?php if($row['remark']==""){ ?>
     <form method="post">
          <tr>
-    <th>Outing Remark :</th>
+    <th>Verify Remark :</th>
     <td colspan="3">
     <textarea name="remark" placeholder="" rows="6" cols="14" class="form-control wd-450" required="true"></textarea></td>
   </tr>                               
  <tr align="center">
-    <td colspan="4"><button type="submit" name="submit" class="btn btn-primary btn-sm">Out</button></td>
+    <td colspan="4"><button type="submit" name="submit" class="btn btn-primary btn-sm">Verify</button></td>
   </tr>
                                         </form>
                <?php } else { ?>
 
 <tr>
-    <th>Outing Remark </th>
+    <th>Verify Remark </th>
     <td><?php echo $row['remark']; ?></td>
-<th>Out Time</th>
+<th>Verify Time</th>
 <td><?php echo $row['outtime']; ?>  </td> 
 <?php } ?>
 </tr>
