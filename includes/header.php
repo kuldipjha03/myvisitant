@@ -21,30 +21,16 @@ $name=$row['AdminName'];
                                 </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
-                                        <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                        </div>
+                                       
                                         <div class="content">
                                             <a class="js-acc-btn" href="admin-profile.php"><?php echo $name; ?></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
-                                            <div class="info clearfix">
-                                                <div class="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                    </a>
-                                                </div>
-                                                <div class="content">
-                                                    <h5 class="name">
-                                                        <a href="#"><?php echo $name; ?></a>
-                                                    </h5>
-                                                   
-                                                </div>
-                                            </div>
+                                           
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="admin-profile.php">
-                                                        <i class="zmdi zmdi-account"></i>Admin Profile</a>
+                                                        <i class="zmdi zmdi-account"></i> Profile</a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a href="change-password.php">

@@ -160,7 +160,81 @@ while ($row=mysqli_fetch_array($ret)) {
 <td><?php echo $row['outtime']; ?>  </td> 
 <?php } ?>
 </tr>
-</table>                        
+<tr>
+  <th>ID Card Number</th>
+  <td colspan="3">
+    <?= !empty($row['idCardNumber']) ? htmlspecialchars($row['idCardNumber']) : "No ID Card Number provided." ?>
+  </td>
+</tr>
+
+<tr>
+  <th>ID Card Image</th>
+  <td colspan="3">
+    <?php 
+    $idCardPath = 'visitor/uploads/' . $row['idCardImage'];
+    if (!empty($row['idCardImage']) && file_exists($idCardPath)) {
+      echo '<img src="' . htmlspecialchars($idCardPath) . '" alt="ID Card" style="max-width:200px; max-height:150px;"><br>';
+      echo '<small>Path: ' . htmlspecialchars($idCardPath) . '</small>';
+    } else {
+      echo "No ID Card uploaded.";
+    }
+    ?>
+  </td>
+</tr>
+
+<tr>
+  <th>Selfie Photo</th>
+  <td colspan="3">
+    <?php 
+    $selfiePath = 'visitor/uploads/' . $row['selfiePhoto'];
+    if (!empty($row['selfiePhoto']) && file_exists($selfiePath)) {
+      echo '<img src="' . htmlspecialchars($selfiePath) . '" alt="Selfie Photo" style="max-width:200px; max-height:150px;"><br>';
+      echo '<small>Path: ' . htmlspecialchars($selfiePath) . '</small>';
+    } else {
+      echo "No Selfie photo uploaded.";
+    }
+    ?>
+  </td>
+</tr>
+
+<?php
+$mobile = $row['MobileNumber'];
+$visitCountResult = mysqli_query($con, "SELECT COUNT(*) AS totalVisits FROM tblvisitor WHERE MobileNumber = '$mobile'");
+$visitCountData = mysqli_fetch_assoc($visitCountResult);
+$visitCount = $visitCountData['totalVisits'];
+?>
+<tr>
+  <th>Number of Visits</th>
+  <td colspan="3"><?= $visitCount ?></td>
+</tr>
+
+</table>      
+<h4 class="mt-4">Visit History</h4>
+<div class="row">
+<?php
+$historyQuery = mysqli_query($con, "SELECT * FROM tblvisitor WHERE MobileNumber = '$mobile' ORDER BY EnterDate DESC");
+
+while ($history = mysqli_fetch_assoc($historyQuery)) {
+?>
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header bg-light">
+                <strong><?= htmlspecialchars($history['VisitorName']) ?></strong>
+                <span class="float-right"><?= date("d-M-Y H:i", strtotime($history['EnterDate'])) ?></span>
+            </div>
+            <div class="card-body">
+                <p><strong>Reason:</strong> <?= htmlspecialchars($history['ReasontoMeet']) ?></p>
+                <p><strong>Whom to Meet:</strong> <?= htmlspecialchars($history['WhomtoMeet']) ?></p>
+                <p><strong>Remark:</strong> <?= htmlspecialchars($history['remark']) ?: 'N/A' ?></p>
+                <?php if (!empty($history['outtime'])): ?>
+                    <p><strong>Out Time:</strong> <?= htmlspecialchars($history['outtime']) ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+</div>
+
                                     </div>
                                    
                                 </div>
