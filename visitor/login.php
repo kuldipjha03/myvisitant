@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 <body>
 
 <div class="login-box">
-    <h2>Admin Login</h2>
+    <h2>Terminal Login</h2>
     <form method="POST">
         <input type="text" name="username" placeholder="Username" autocomplete="username" required />
         <input type="password" name="password" placeholder="Password" autocomplete="current-password" required />

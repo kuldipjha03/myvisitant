@@ -330,13 +330,23 @@ if (!empty($_POST['hasSelfiePhoto'])) {
   background-color: #45a049;
 }
 
+
+
   </style>
+
+  <style>
+  .btn:hover {
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
+  }
+</style>
+
 </head>
 
 <body>
 <div class="wrapper">
 <div class="form-container">
-
 
   <div style="text-align: right; padding: 10px;">
         Terminal, <strong><?= htmlspecialchars($_SESSION['avmsaid']) ?></strong>
@@ -346,7 +356,7 @@ if (!empty($_POST['hasSelfiePhoto'])) {
 <div class="step-indicator">
   <div class="step <?= (!isset($_SESSION['otp']) && !isset($_SESSION['otp_verified'])) ? 'active' : '' ?>">1. Mobile</div>
   <div class="step <?= (isset($_SESSION['otp']) && !isset($_SESSION['otp_verified'])) ? 'active' : '' ?>">2. OTP</div>
-  <div class="step <?= (isset($_SESSION['otp_verified'])) ? 'active' : '' ?>">3. Register</div>
+  <div class="step <?= (isset($_SESSION['otp_verified'])) ? 'active' : '' ?>">3. Form</div>
   <div class="step <?= (!empty($qr_image_url)) ? 'active' : '' ?>">4. Success</div>
 </div>
 
@@ -357,7 +367,16 @@ if (!empty($_POST['hasSelfiePhoto'])) {
             <input type="text" name="MobileNumber" value="<?= htmlspecialchars($mobile) ?>" required>
             <button type="submit" name="check_mobile">Send OTP</button>
         </form>
+        
+ <!-- QR Image Centered with Top Padding -->
+    <div style="text-align: center; padding-top: 30px;">
+        <a href="qr-scan.php">
+            <img src="../images/icon/qr.png" alt="QR Icon" width="250" height="250">
+        </a>
+    </div>
     <?php endif; ?>
+
+
 
     <!-- Step 2: OTP -->
     <?php if (isset($_SESSION['otp']) && !isset($_SESSION['otp_verified'])): ?>
@@ -459,8 +478,10 @@ if (!empty($_POST['hasSelfiePhoto'])) {
 <?php else: ?>
 <?php endif; ?>
 </div>
+
 <!-- Sticky Footer Menu -->
 <div class="footer-menu">
+
     <form method="POST" action="terminal.php">
         <button type="submit" class="active">Check-In</button>
     </form>

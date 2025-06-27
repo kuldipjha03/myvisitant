@@ -2,255 +2,203 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-error_reporting(0);
-if (strlen($_SESSION['avmsaid']==0)) {
-  header('location:logout.php');
-  } else{ ?>
+
+if (strlen($_SESSION['avmsaid'] == 0)) {
+    header('location:logout.php');
+} else {
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
     <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Fontfaces CSS-->
-    <link href="css/font-face.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
-    <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="css/theme.css" rel="stylesheet" media="all">
-
+    <!-- CSS -->
+    <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+    <style>
+        .card {
+            border-radius: 12px;
+        }
+        .card h4 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .card small {
+            font-size: 0.875rem;
+            color: #666;
+        }
+    </style>
 </head>
-
 <body class="animsition">
     <div class="page-wrapper">
-        <!-- HEADER MOBILE-->
-        
+        <?php include_once('includes/sidebar.php'); ?>
 
-        <!-- MENU SIDEBAR-->
-         <?php include_once('includes/sidebar.php');?>
-        <!-- END MENU SIDEBAR-->
-
-        <!-- PAGE CONTAINER-->
         <div class="page-container">
-            <!-- HEADER DESKTOP-->
-            <?php include_once('includes/header.php');?>
-            <!-- HEADER DESKTOP-->
+            <?php include_once('includes/header.php'); ?>
 
-            <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+                        <div class="row">
 
-                        <div class="row m-t-25">
- <?php
-//todays visitors
- $query=mysqli_query($con,"select ID from tblvisitor where date(EnterDate)=CURDATE();");
-$count_today_visitors=mysqli_num_rows($query);
- ?>                       
+                            <?php
+                            // Metrics
+                            $today = mysqli_num_rows(mysqli_query($con, "SELECT ID FROM tblvisitor WHERE date(EnterDate)=CURDATE()"));
+                            $yesterday = mysqli_num_rows(mysqli_query($con, "SELECT ID FROM tblvisitor WHERE date(EnterDate)=CURDATE()-1"));
+                            $last7 = mysqli_num_rows(mysqli_query($con, "SELECT ID FROM tblvisitor WHERE date(EnterDate)>=CURDATE() - INTERVAL 7 DAY"));
+                            $total = mysqli_num_rows(mysqli_query($con, "SELECT ID FROM tblvisitor"));
+                            $categories = mysqli_num_rows(mysqli_query($con, "SELECT id FROM tblcategory"));
+                            $totalpass = mysqli_num_rows(mysqli_query($con, "SELECT ID FROM tblvisitorpass"));
+                            ?>
 
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c1">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                                     <i class="zmdi zmdi-account-o"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $count_today_visitors?></h2>
-                                                <span>&nbsp;&nbsp;Todays   Visitors &nbsp;</span>
-                                            </div>
+                            <!-- Today's Visitors -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-account-o text-primary fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $today; ?></h4>
+                                            <small>Today's Visitors</small>
                                         </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
- <?php
-//Yesterdays visitors
- $query1=mysqli_query($con,"select ID from tblvisitor where date(EnterDate)=CURDATE()-1;");
-$count_yesterday_visitors=mysqli_num_rows($query1);
- ?>                       
-
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c2">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                                     <i class="zmdi zmdi-account-o"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $count_yesterday_visitors?></h2>
-                                                <span>Yesterday   Visitors</span>
-                                            </div>
-                                        </div>
-                                    
                                     </div>
                                 </div>
                             </div>
 
- <?php
-//Last Sevendays visitors
- $query2=mysqli_query($con,"select ID from tblvisitor where date(EnterDate)>=(DATE(NOW()) - INTERVAL 7 DAY);");
-$count_lastsevendays_visitors=mysqli_num_rows($query2);
- ?>                       
-
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c3">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                                <i class="zmdi zmdi-account-o"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $count_lastsevendays_visitors?></h2>
-                                                <span>Last 7 Days Visitors</span>
-                                            </div>
+                            <!-- Yesterday's Visitors -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-account-o text-success fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $yesterday; ?></h4>
+                                            <small>Yesterday's Visitors</small>
                                         </div>
-                                     
-                                    </div>
-                                </div>
-                            </div>
-    <?php
-//Total Visitors visitors
- $query3=mysqli_query($con,"select ID from tblvisitor");
-$count_total_visitors=mysqli_num_rows($query3);
- ?>                       
-
-
-
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c4">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                            <i class="zmdi zmdi-account-o"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $count_total_visitors?></h2>
-                                                <span>Total Visitors  Till Date</span>
-                                            </div>
-                                        </div>
-                                   
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-
-    <?php
-//Total Visitors visitors
- $query5=mysqli_query($con,"select id from tblcategory");
-$listedcategories=mysqli_num_rows($query5);
- ?>                       
-
-
-
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c3">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                            <i class="zmdi zmdi-file-text"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $listedcategories?></h2>
-                                                <span>Listed categories</span>
-                                            </div>
-                                        </div>
-                                   
                                     </div>
                                 </div>
                             </div>
 
-    <?php
-//Total Visitors visitors
- $query6=mysqli_query($con,"select ID from tblvisitorpass");
-$totalpass=mysqli_num_rows($query6);
- ?>                       
-
-
-
-
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="overview-item overview-item--c3">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="icon">
-                                            <i class="zmdi zmdi-file-text"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h2><?php echo $totalpass?></h2>
-                                                <span>Total Pass Created</span>
-                                            </div>
+                            <!-- Last 7 Days Visitors -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-account-o text-info fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $last7; ?></h4>
+                                            <small>Last 7 Days Visitors</small>
                                         </div>
-                                   
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Total Visitors -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-accounts-alt text-danger fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $total; ?></h4>
+                                            <small>Total Visitors</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Listed Categories -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-file-text text-warning fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $categories; ?></h4>
+                                            <small>Listed Categories</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Pass Created -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="zmdi zmdi-ticket-star text-secondary fa-2x mr-3"></i>
+                                        <div>
+                                            <h4><?php echo $totalpass; ?></h4>
+                                            <small>Total Pass Created</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                       
-                   
-<?php include_once('includes/footer.php');?>
-     
+
+                        <!-- Visitors Chart -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Visitor Trend (Last 7 Days)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="visitorChart" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php include_once('includes/footer.php'); ?>
                     </div>
                 </div>
             </div>
-             
         </div>
-
     </div>
-    <!-- Jquery JS-->
+
+    <!-- JS Libraries -->
     <script src="vendor/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap JS-->
     <script src="vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
-    </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Main JS-->
-    <script src="js/main.js"></script>
+    <!-- Visitor Chart Script -->
+    <script>
+        <?php
+        $labels = [];
+        $values = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $day = date('Y-m-d', strtotime("-$i days"));
+            $labels[] = date('D', strtotime($day));
+            $result = mysqli_query($con, "SELECT COUNT(*) AS count FROM tblvisitor WHERE DATE(EnterDate) = '$day'");
+            $row = mysqli_fetch_assoc($result);
+            $values[] = (int)$row['count'];
+        }
+        ?>
 
+        const ctx = document.getElementById('visitorChart').getContext('2d');
+        const visitorChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($labels); ?>,
+                datasets: [{
+                    label: 'Visitors',
+                    data: <?php echo json_encode($values); ?>,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: '#36A2EB',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
 </body>
-
 </html>
-<!-- end document-->
 <?php } ?>
