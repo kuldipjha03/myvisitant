@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['avmsaid'])) {
+    header("Location: login.php");
+    exit;
+}
 // DB connection
 $conn = new mysqli("localhost", "root", "", "avmsdb");
 if ($conn->connect_error) {
@@ -333,6 +336,12 @@ if (!empty($_POST['hasSelfiePhoto'])) {
 <body>
 <div class="wrapper">
 <div class="form-container">
+
+
+  <div style="text-align: right; padding: 10px;">
+        Terminal, <strong><?= htmlspecialchars($_SESSION['avmsaid']) ?></strong>
+        | <a href="logout.php" style="color: red; text-decoration: none;">Logout</a>
+    </div>
     <h2>Visitor Registration</h2>
 <div class="step-indicator">
   <div class="step <?= (!isset($_SESSION['otp']) && !isset($_SESSION['otp_verified'])) ? 'active' : '' ?>">1. Mobile</div>
