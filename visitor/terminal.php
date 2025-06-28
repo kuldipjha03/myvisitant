@@ -374,6 +374,42 @@ if (!empty($_POST['hasSelfiePhoto'])) {
             <img src="../images/icon/qr.png" alt="QR Icon" width="250" height="250">
         </a>
     </div>
+<?php
+// Get count of available rooms by type
+$type_counts = [];
+$type_query = $conn->query("SELECT room_type, COUNT(*) as count FROM rooms WHERE status = 'available' GROUP BY room_type");
+while ($row = $type_query->fetch_assoc()) {
+    $type_counts[] = $row;
+}
+?>
+
+
+  <?php if (!empty($type_counts)): ?>
+    <div style="text-align:center; margin-top: 30px;">
+        <h3>🛏 Available Room Types</h3>
+        <ul style="list-style: none; padding-left: 0; font-size: 16px;">
+            <?php foreach ($type_counts as $type): ?>
+                <li style="padding: 6px 0;">
+                    <strong><?= htmlspecialchars($type['room_type']) ?></strong>: <?= $type['count'] ?> available
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php else: ?>
+   
+    <div style="text-align:center; margin-top: 30px;">
+    <p style="color: red;">
+        <i class="fas fa-triangle-exclamation"></i> No rooms available right now.
+    </p>
+    <a href="future-booking.php" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; border-radius: 5px; text-decoration: none;">
+        <i class="fas fa-calendar-plus"></i> Book for Future Date
+    </a>
+</div>
+
+<?php endif; ?>
+
+
+
     <?php endif; ?>
 
 
@@ -471,9 +507,13 @@ if (!empty($_POST['hasSelfiePhoto'])) {
         <a href="<?= $qr_image_url ?>" download="visitor-pass.png" class="download-btn">Download QR</a>
     </div>
 
+      <a href="book-room.php?visitor_id=<?= $visitor_id ?>" class="home-btn">Book Room</a>
     <form method="POST">
         <button type="submit" name="reset_process" class="home-btn">Go to Home</button>
     </form>
+
+  
+
 </div>
 <?php else: ?>
 <?php endif; ?>
